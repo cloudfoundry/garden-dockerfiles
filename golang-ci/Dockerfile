@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER https://github.com/cloudfoundry-incubator/diego-dockerfiles
+MAINTAINER https://github.com/cloudfoundry/garden-dockerfiles
 
 ENV HOME /root
 ENV GOPATH /root/go
