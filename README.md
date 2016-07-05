@@ -36,4 +36,5 @@ docker login
 
 ```
 docker push cfgarden/garden-ci-ubuntu:x.y.z
+docker push cfgarden/garden-ci-ubuntu:latest
 ```
