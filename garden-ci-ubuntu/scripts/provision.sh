@@ -1,8 +1,5 @@
 set -e -x
 
-# seccomp profiles require a recent (>= 2.2.1) version of seccomp
-echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
-
 # install build dependencies
 # - graphviz is for rendering heap w/ pprof
 apt-get update && \
@@ -23,8 +20,16 @@ apt-get -y --force-yes install \
   quota \
   ulogd \
   pkg-config \
+  libapparmor-dev \
+  apparmor-utils
+
+# seccomp profiles require a recent (>= 2.2.1) version of seccomp
+echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
+apt-get update && \
+apt-get -y --force-yes install \
   libseccomp2/jessie-backports \
   libseccomp-dev/jessie-backports
+rm /etc/apt/sources.list.d/backports.list
 
 # install go1.6.1
 wget -qO- https://storage.googleapis.com/golang/go1.6.1.linux-amd64.tar.gz | tar -C /usr/local -xzf -
