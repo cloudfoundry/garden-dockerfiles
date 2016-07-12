@@ -1,6 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER https://github.com/cloudfoundry/garden-dockerfiles
 
+ENV GOPATH /root/go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 ADD scripts/* scripts/
 RUN scripts/passwordless_sudo.sh
 RUN scripts/provision.sh

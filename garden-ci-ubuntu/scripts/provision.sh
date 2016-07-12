@@ -34,15 +34,8 @@ rm /etc/apt/sources.list.d/backports.list
 # install go1.6.1
 wget -qO- https://storage.googleapis.com/golang/go1.6.1.linux-amd64.tar.gz | tar -C /usr/local -xzf -
 
-#Set up $GOPATH and add go executables to $PATH
-cat > /etc/profile.d/go_env.sh <<\EOF
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
-EOF
-chmod +x /etc/profile.d/go_env.sh
-
-export GOPATH=$HOME/go
-export PATH=/usr/local/go/bin:$PATH
+go get github.com/onsi/ginkgo/ginkgo
+go install github.com/onsi/ginkgo/ginkgo
 
 # create dir for rootfses to upload to
 mkdir -p /opt/warden
