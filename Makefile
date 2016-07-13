@@ -1,10 +1,14 @@
-all: with-volume garden-ci garden-ci-ubuntu
-.PHONY: push with-volume garden-ci garden-ci-ubuntu
+all: golang-ci with-volume garden-ci garden-ci-ubuntu
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu
 
 push:
+	docker push cloudfoundry/golang-ci
 	docker push cloudfoundry/with-volume
 	docker push cfgarden/garden-ci
 	docker push cfgarden/garden-ci-ubuntu
+
+golang-ci: golang-ci/Dockerfile
+	docker build -t cloudfoundry/golang-ci --rm golang-ci
 
 with-volume: with-volume/Dockerfile
 	docker build -t cloudfoundry/with-volume --rm with-volume
