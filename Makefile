@@ -1,11 +1,12 @@
-all: golang-ci with-volume garden-ci garden-ci-ubuntu
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu
+all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
 
 push:
 	docker push cloudfoundry/with-volume
 	docker push cfgarden/garden-ci
 	docker push cfgarden/garden-ci-ubuntu
 	docker push cfgarden/golang-ci
+	docker push cfgarden/large_layers
 
 golang-ci: golang-ci/Dockerfile
 	docker build -t cfgarden/golang-ci --rm golang-ci
@@ -15,6 +16,9 @@ with-volume: with-volume/Dockerfile
 
 garden-ci: garden-ci/Dockerfile
 	docker build -t cfgarden/garden-ci --rm garden-ci
+
+large_layers: large_layers/Dockerfile
+	docker build -t cfgarden/large_layers --rm large_layers
 
 ROOTFSES_DIR=garden-ci-ubuntu/rootfses
 DEPS_DIR=garden-ci-ubuntu/dependencies
