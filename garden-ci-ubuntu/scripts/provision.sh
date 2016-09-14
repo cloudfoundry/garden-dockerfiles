@@ -21,7 +21,8 @@ apt-get -y --force-yes install \
   ulogd \
   pkg-config \
   libapparmor-dev \
-  apparmor-utils
+  apparmor-utils \
+  netcat
 
 # seccomp profiles require a recent (>= 2.2.1) version of seccomp
 echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
