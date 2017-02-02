@@ -8,6 +8,7 @@ ADD scripts/* scripts/
 RUN scripts/passwordless_sudo.sh
 RUN scripts/provision.sh
 RUN scripts/build_tar.sh
+RUN scripts/build_iptables.sh
 RUN scripts/cleanup.sh
 RUN scripts/grootfs_setup.sh
 
