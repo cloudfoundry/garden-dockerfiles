@@ -11,7 +11,6 @@ RUN scripts/build_tar.sh
 RUN scripts/build_iptables.sh
 RUN scripts/build_apparmor.sh
 RUN scripts/cleanup.sh
-RUN scripts/grootfs_setup.sh
 
 ADD dependencies/busybox.tar /opt/warden/rootfs
 ADD dependencies/ubuntu.tar /opt/warden/nestable-rootfs
