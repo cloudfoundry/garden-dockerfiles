@@ -41,3 +41,7 @@ go install github.com/onsi/ginkgo/ginkgo
 # create dir for rootfses to upload to
 mkdir -p /opt/warden
 chmod 0777 /opt/warden
+
+# add a user to run rootless tests as
+groupadd -g 5000 rootless
+useradd -u 5000 -g 5000 rootless
