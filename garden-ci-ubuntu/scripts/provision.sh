@@ -38,6 +38,10 @@ wget -qO- https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz | tar
 go get github.com/onsi/ginkgo/ginkgo
 go install github.com/onsi/ginkgo/ginkgo
 
+wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.28.0&source=github-rel" | tar -zx cf
+mv cf /usr/local/bin
+chmod 755 /usr/local/bin/cf
+
 # create dir for rootfses to upload to
 mkdir -p /opt/warden
 chmod 0777 /opt/warden
