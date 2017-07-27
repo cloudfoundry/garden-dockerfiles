@@ -1,10 +1,8 @@
-FROM ubuntu:15.10
+FROM alpine:3.6
 MAINTAINER https://github.com/cloudfoundry/garden-dockerfiles
 
-RUN apt-get update && \
-    apt-get -y install git unzip ruby ruby-dev \
-        libxml2-dev libxslt-dev libcurl4-openssl-dev \
-        build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev
+ADD https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64 /opt/bin/bosh
+RUN chmod +x /opt/bin/bosh
+ENV PATH=/opt/bin:$PATH
 
-RUN gem install bundler --no-rdoc --no-ri
-RUN gem install bosh_cli -v 1.3232.0 --no-rdoc --no-ri
+RUN apk update && apk add bash git
