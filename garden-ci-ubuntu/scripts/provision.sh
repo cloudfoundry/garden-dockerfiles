@@ -1,29 +1,31 @@
+#!/usr/bin/env bash
 set -e -x
 
 # install build dependencies
 # - graphviz is for rendering heap w/ pprof
 apt-get update && \
 apt-get -y --force-yes install \
+  apparmor-utils \
+  aufs-tools \
   build-essential \
   curl \
   git \
   graphviz \
   htop \
+  iptables \
+  jq \
+  libapparmor-dev \
   libpython-dev \
   lsof \
+  netcat \
+  pkg-config \
   psmisc \
   python \
-  strace \
-  wget \
-  iptables \
-  aufs-tools \
   quota \
+  strace \
+  uidmap \
   ulogd \
-  pkg-config \
-  libapparmor-dev \
-  apparmor-utils \
-  netcat \
-  uidmap
+  wget
 
 # seccomp profiles require a recent (>= 2.2.1) version of seccomp
 echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
