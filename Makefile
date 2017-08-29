@@ -1,5 +1,5 @@
 all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty bosh-dns-monitor
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty
 
 push:
 	docker push cfgarden/with-volume
@@ -75,6 +75,3 @@ ${DEPS_DIR}/preexisting_users.tar: ${ROOTFSES_DIR}/preexisting_users/Dockerfile
 
 garden-ci-ubuntu: ${DEPENDENCIES} garden-ci-ubuntu/Dockerfile
 	docker build -t cfgarden/garden-ci-ubuntu --rm garden-ci-ubuntu
-
-bosh-dns-monitor:
-	docker build -t cfgarden/bosh-dns-monitor bosh-dns-monitor
