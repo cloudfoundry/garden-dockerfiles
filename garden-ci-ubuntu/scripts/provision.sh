@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e -x
+set -ex
 
 # install build dependencies
 # - graphviz is for rendering heap w/ pprof
@@ -51,3 +51,6 @@ chmod 0777 /opt/warden
 # add a user to run rootless tests as
 groupadd -g 5000 rootless
 useradd -u 5000 -g 5000 rootless
+
+curl -o /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.33-linux-amd64
+chmod +rx /usr/local/bin/bosh
