@@ -17,7 +17,7 @@ function install_libmnl() {
 }
 
 function install_libnftnl() {
-  local libnftnl_version=1.0.7
+  local libnftnl_version=1.0.8
 
   curl "https://www.netfilter.org/projects/libnftnl/files/libnftnl-${libnftnl_version}.tar.bz2" | tar jxf -
 
@@ -77,7 +77,7 @@ function install_seccomp() {
 }
 
 apt-get update
-apt-get -y install pkg-config bzip2
+apt-get -y install pkg-config bzip2 wget build-essential bison flex
 
 mkdir -p /opt/static-assets
 

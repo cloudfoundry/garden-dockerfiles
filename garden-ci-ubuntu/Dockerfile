@@ -7,9 +7,8 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 ADD scripts/* scripts/
 RUN scripts/passwordless_sudo.sh
 RUN scripts/provision.sh
-RUN scripts/build_iptables.sh
-RUN scripts/build_apparmor.sh
 RUN scripts/build_static_assets.sh
+RUN scripts/build_apparmor.sh
 RUN scripts/cleanup.sh
 
 ADD dependencies/busybox.tar /opt/warden/rootfs
