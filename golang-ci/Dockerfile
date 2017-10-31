@@ -1,10 +1,6 @@
-FROM cloudfoundry/golang-ci
-MAINTAINER https://github.com/cloudfoundry/garden-dockerfiles
+FROM golang:1.9.2-stretch
 
-ENV GOPATH /root/go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-RUN apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat
+RUN go get github.com/onsi/ginkgo
 RUN go get github.com/onsi/ginkgo/ginkgo
-RUN go install github.com/onsi/ginkgo/ginkgo
 RUN go get github.com/onsi/gomega
