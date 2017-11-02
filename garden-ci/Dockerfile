@@ -5,4 +5,4 @@ ADD https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.33-linux-amd64 /opt
 RUN chmod +x /opt/bin/bosh
 ENV PATH=/opt/bin:$PATH
 
-RUN apk update && apk add bash git
+RUN apk update && apk add bash git ruby
