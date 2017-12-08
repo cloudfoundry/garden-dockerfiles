@@ -46,7 +46,7 @@ ${DEPS_DIR}/docker_registry.tar:
 	docker rm -f docker_registry
 
 ${DEPS_DIR}/docker_registry_v2.tar:
-	docker run -d -p "5000:5000" -e "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/opt/docker-registry" --name docker_registry_v2 registry:2.0.1
+	docker run -d -p "5000:5000" -e "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/opt/docker-registry" --name docker_registry_v2 registry:2.6.2
 	./garden-ci-ubuntu/scripts/provision_registry_v2.sh
 	docker export -o ${DEPS_DIR}/docker_registry_v2.tar docker_registry_v2
 	docker rm -f docker_registry_v2
