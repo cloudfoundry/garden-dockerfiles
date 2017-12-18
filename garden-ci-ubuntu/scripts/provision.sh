@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -ex
 
+export GOPATH=/root/go
+export PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
+
 # install build dependencies
 # - graphviz is for rendering heap w/ pprof
 apt-get update && \

@@ -2,6 +2,10 @@
 
 set -e
 
+build_dir=$HOME/build
+mkdir -p "$build_dir"
+cd "$build_dir"
+
 function install_libmnl() {
   local libmnl_version=1.0.4
 

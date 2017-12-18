@@ -1,5 +1,5 @@
 all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able dev-vm
 
 push:
 	docker push cfgarden/with-volume
@@ -21,8 +21,8 @@ garden-ci: garden-ci/Dockerfile
 large_layers: large_layers/Dockerfile
 	docker build -t cfgarden/large_layers --rm large_layers
 
-empty: empty/Dockerfile
-	docker build -t cfgarden/empty --rm empty
+ansible-able: ansible-able/Dockerfile
+	docker build -t cfgarden/ansible-able --rm ansible-able
 
 ROOTFSES_DIR=garden-ci-ubuntu/rootfses
 DEPS_DIR=garden-ci-ubuntu/dependencies
@@ -30,7 +30,6 @@ DEPENDENCIES=${DEPS_DIR}/busybox.tar \
 						 ${DEPS_DIR}/ubuntu.tar \
 						 ${DEPS_DIR}/docker_registry.tar \
 						 ${DEPS_DIR}/docker_registry_v2.tar \
-						 ${DEPS_DIR}/hello \
 						 ${DEPS_DIR}/fuse.tar \
 						 ${DEPS_DIR}/preexisting_users.tar
 
@@ -51,10 +50,6 @@ ${DEPS_DIR}/docker_registry_v2.tar:
 	docker export -o ${DEPS_DIR}/docker_registry_v2.tar docker_registry_v2
 	docker rm -f docker_registry_v2
 
-${DEPS_DIR}/hello: ${ROOTFSES_DIR}/empty/hello.go
-	cd ${ROOTFSES_DIR}/empty && GOOS=linux go build hello.go
-	mv ${ROOTFSES_DIR}/empty/hello ${DEPS_DIR}/hello
-
 ${DEPS_DIR}/fuse.tar: ${ROOTFSES_DIR}/fuse/Dockerfile
 	docker build -t cfgarden/fuse --rm ${ROOTFSES_DIR}/fuse
 	docker run --name fuse cfgarden/fuse
@@ -73,5 +68,8 @@ ${DEPS_DIR}/preexisting_users.tar: ${ROOTFSES_DIR}/preexisting_users/Dockerfile
 	docker export -o ${DEPS_DIR}/preexisting_users.tar preexisting_users
 	docker rm -f preexisting_users
 
-garden-ci-ubuntu: ${DEPENDENCIES} garden-ci-ubuntu/Dockerfile
-	docker build -t cfgarden/garden-ci-ubuntu --rm garden-ci-ubuntu
+garden-ci-ubuntu: ${DEPENDENCIES} ansible-able garden-ci-ubuntu/build-docker-image.sh
+	garden-ci-ubuntu/build-docker-image.sh
+
+dev-vm: ${DEPENDENCIES} garden-ci-ubuntu/Vagrantfile
+	garden-ci-ubuntu/build-dev-vm.sh
