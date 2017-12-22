@@ -29,6 +29,7 @@ apt-get -y --force-yes install \
   uidmap \
   ulogd \
   wget \
+  unzip \
   xfsprogs
 
 # seccomp profiles require a recent (>= 2.2.1) version of seccomp
@@ -58,3 +59,8 @@ useradd -u 5000 -g 5000 rootless
 
 curl -o /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.33-linux-amd64
 chmod +rx /usr/local/bin/bosh
+
+wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip -O tf.zip
+unzip tf.zip
+mv terraform /usr/local/bin/
+chmod +rx /usr/local/bin/terraform
