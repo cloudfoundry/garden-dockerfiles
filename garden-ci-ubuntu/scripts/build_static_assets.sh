@@ -21,7 +21,7 @@ function install_libmnl() {
 }
 
 function install_libnftnl() {
-  local libnftnl_version=1.0.8
+  local libnftnl_version=1.0.9
 
   curl "https://www.netfilter.org/projects/libnftnl/files/libnftnl-${libnftnl_version}.tar.bz2" | tar jxf -
 
