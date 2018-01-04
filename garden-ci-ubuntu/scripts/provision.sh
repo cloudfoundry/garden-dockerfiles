@@ -64,3 +64,8 @@ wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd6
 unzip tf.zip
 mv terraform /usr/local/bin/
 chmod +rx /usr/local/bin/terraform
+
+wget -qO - "https://ftp.gnu.org/gnu/tar/tar-1.30.tar.xz" | tar xJ
+cd tar-1.30
+FORCE_UNSAFE_CONFIGURE=1 ./configure && make install
+rm /bin/tar
