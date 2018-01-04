@@ -53,9 +53,9 @@ function install_iptables() {
 }
 
 function install_tar() {
-  local tar_version=1.29
+  local tar_version=1.30
 
-  curl "https://ftp.gnu.org/gnu/tar/tar-${tar_version}.tar.gz" | tar zxf -
+  curl "https://ftp.gnu.org/gnu/tar/tar-${tar_version}.tar.xz" | tar xJf -
 
   pushd "tar-${tar_version}"
     FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/opt/static-assets/tar
