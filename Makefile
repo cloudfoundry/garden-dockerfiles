@@ -9,7 +9,14 @@ push:
 	docker push cfgarden/large_layers
 	docker push cfgarden/empty
 
-golang-ci: golang-ci/Dockerfile
+golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz:
+	mkdir -p golang-ci/cache
+	cd golang-ci/cache && \
+		wget https://s3-us-west-1.amazonaws.com/cf-cli-releases/releases/v6.33.1/cf-cli_6.33.1_linux_x86-64.tgz
+
+golang_ci_deps=golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz
+
+golang-ci: ${golang_ci_deps} golang-ci/Dockerfile
 	docker build -t cfgarden/golang-ci --rm golang-ci
 
 with-volume: with-volume/Dockerfile
