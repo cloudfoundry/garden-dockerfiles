@@ -67,7 +67,7 @@ function install_tar() {
 }
 
 function install_seccomp() {
-  local seccomp_version=2.3.2
+  local seccomp_version=2.3.3
 
   curl -L "https://github.com/seccomp/libseccomp/releases/download/v${seccomp_version}/libseccomp-${seccomp_version}.tar.gz" | tar zxf -
 
