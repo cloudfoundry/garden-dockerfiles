@@ -1,5 +1,5 @@
 all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able dev-vm
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able-ubuntu ansible-able-xenial dev-vm
 
 push:
 	docker push cfgarden/with-volume
@@ -28,8 +28,11 @@ garden-ci: garden-ci/Dockerfile
 large_layers: large_layers/Dockerfile
 	docker build -t cfgarden/large_layers --rm large_layers
 
-ansible-able: ansible-able/Dockerfile
-	docker build -t cfgarden/ansible-able --rm ansible-able
+ansible-able-ubuntu: ansible-able-ubuntu/Dockerfile
+	docker build -t cfgarden/ansible-able-ubuntu --rm ansible-able-ubuntu
+
+ansible-able-xenial: ansible-able-xenial/Dockerfile
+	docker build -t cfgarden/ansible-able-xenial --rm ansible-able-xenial
 
 ROOTFSES_DIR=garden-ci-ubuntu/rootfses
 DEPS_DIR=garden-ci-ubuntu/dependencies
@@ -75,8 +78,11 @@ ${DEPS_DIR}/preexisting_users.tar: ${ROOTFSES_DIR}/preexisting_users/Dockerfile
 	docker export -o ${DEPS_DIR}/preexisting_users.tar preexisting_users
 	docker rm -f preexisting_users
 
-garden-ci-ubuntu: ${DEPENDENCIES} ansible-able garden-ci-ubuntu/build-docker-image.sh
+garden-ci-ubuntu: ${DEPENDENCIES} ansible-able-ubuntu garden-ci-ubuntu/build-docker-image.sh
 	garden-ci-ubuntu/build-docker-image.sh
+
+garden-ci-xenial: ${DEPENDENCIES} ansible-able-xenial garden-ci-ubuntu/build-docker-image.sh
+	garden-ci-ubuntu/build-docker-image.sh xenial
 
 dev-vm: ${DEPENDENCIES} garden-ci-ubuntu/Vagrantfile
 	garden-ci-ubuntu/build-dev-vm.sh

@@ -30,7 +30,9 @@ apt-get -y --force-yes install \
   ulogd \
   wget \
   unzip \
-  xfsprogs
+  xfsprogs \
+  net-tools \
+  iputils-ping
 
 # seccomp profiles require a recent (>= 2.2.1) version of seccomp
 echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
