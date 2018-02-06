@@ -1,5 +1,5 @@
-all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able-ubuntu ansible-able-xenial dev-vm
+all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers fifteen-point-five
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five
 
 push:
 	docker push cfgarden/with-volume
@@ -27,6 +27,9 @@ garden-ci: garden-ci/Dockerfile
 
 large_layers: large_layers/Dockerfile
 	docker build -t cfgarden/large_layers --rm large_layers
+
+fifteen-point-five:
+	docker build -t cfgarden/fifteen-point-five --rm fifteen-point-five
 
 ansible-able-ubuntu: ansible-able-ubuntu/Dockerfile
 	docker build -t cfgarden/ansible-able-ubuntu --rm ansible-able-ubuntu
