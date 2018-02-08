@@ -35,7 +35,7 @@ function install_libnftnl() {
 }
 
 function install_iptables() {
-  local iptables_version=1.6.1
+  local iptables_version=1.6.2
 
   install_libmnl
   install_libnftnl
