@@ -1,3 +1,4 @@
-FROM busybox
+FROM alpine
 
-RUN touch /var/.wh..wh..opq
+RUN mkdir /var/somedir
+RUN rm -r /var && mkdir /var && touch /var/istillexist
