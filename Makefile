@@ -1,5 +1,5 @@
 all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers fifteen-point-five
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five
+.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty zip-bomb ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five
 
 push:
 	docker push cfgarden/with-volume
@@ -8,6 +8,7 @@ push:
 	docker push cfgarden/golang-ci
 	docker push cfgarden/large_layers
 	docker push cfgarden/empty
+	docker push cfgarden/zip-bomb
 
 golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz:
 	mkdir -p golang-ci/cache
