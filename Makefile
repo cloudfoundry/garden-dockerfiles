@@ -36,6 +36,9 @@ fifteen-point-five:
 tutu:
 	docker build -t cfgarden/tutu --rm tutu
 
+iamthebomb:
+	docker build -t cfgarden/iamthebomb --rm zip-bomb
+
 ansible-able-ubuntu: ansible-able-ubuntu/Dockerfile
 	docker build -t cfgarden/ansible-able-ubuntu --rm ansible-able-ubuntu
 
