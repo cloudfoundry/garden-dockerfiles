@@ -24,6 +24,9 @@ golang-ci: ${golang_ci_deps} golang-ci/Dockerfile
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
 
+with-process-env: with-process-env/Dockerfile
+	docker build -t cfgarden/with-process-env --rm with-process-env
+
 garden-ci: garden-ci/Dockerfile
 	docker build -t cfgarden/garden-ci --rm garden-ci
 
