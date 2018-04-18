@@ -39,8 +39,7 @@ function install_iptables() {
 
   install_libmnl
   install_libnftnl
-
-  curl "http://www.netfilter.org/projects/iptables/files/iptables-${iptables_version}.tar.bz2" | tar jxf -
+  curl "https://netfilter.org/projects/iptables/files/iptables-${iptables_version}.tar.bz2" | tar jxf -
 
   pushd "iptables-${iptables_version}"
     mkdir /opt/static-assets/iptables
