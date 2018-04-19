@@ -2,7 +2,7 @@
  "builders": [
    {
       "type": "docker",
-      "image": "busybox:latest",
+      "image": "busybox:1.27.2",
       "export_path": "rootfs/busybox/busybox.tar",
       "run_command": ["-d", "-i", "-t", "{{.Image}}", "/bin/sh"]
     }
