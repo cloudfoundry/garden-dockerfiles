@@ -1,4 +1,4 @@
-FROM busybox:latest
+FROM busybox:1.27.2
 
 RUN adduser -D alice && \
   adduser -D bob
