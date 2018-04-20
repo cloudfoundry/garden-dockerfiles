@@ -9,7 +9,6 @@ Images CF Garden team consumes in testing environments.
 * `ubuntu-bc`: Ubuntu image with `bc` program.
 * `with-user-with-group`: Image with a user that has supplementary groups.
 * `with-volume`: Image that uses defines a Docker volume.
-* `with_etc_seed`: Image that provides an `/etc/seed` file.
 
 ## Building garden-ci-ubuntu
 
