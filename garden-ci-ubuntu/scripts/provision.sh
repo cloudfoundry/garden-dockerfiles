@@ -30,7 +30,6 @@ apt-get -y --force-yes install \
   ulogd \
   wget \
   unzip \
-  xfsprogs \
   net-tools \
   iputils-ping
 

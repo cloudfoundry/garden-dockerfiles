@@ -79,11 +79,26 @@ function install_seccomp() {
   rm -rf "libseccomp-${seccomp_version}"
 }
 
+function install_xfsprogs() {
+  local xfsprogs_version=4.3.0
+
+  curl "http://ftp.ntu.edu.tw/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.3.0.tar.gz" | tar zxf -
+
+  pushd "xfsprogs-${xfsprogs_version}"
+    ./configure
+    make
+    make install
+  popd
+
+  rm -rf "xfsprogs-${xfsprogs_version}"
+}
+
 apt-get update
-apt-get -y install pkg-config bzip2 wget build-essential bison flex
+apt-get -y install pkg-config bzip2 wget build-essential bison flex gettext uuid-dev libblkid-dev
 
 mkdir -p /opt/static-assets
 
 install_tar
 install_iptables
 install_seccomp
+install_xfsprogs
