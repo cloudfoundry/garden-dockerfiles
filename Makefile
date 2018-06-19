@@ -10,6 +10,7 @@ push:
 	docker push cfgarden/empty
 	docker push cfgarden/zip-bomb
 	docker push cfgarden/tutu
+	docker push cfgarden/hello
 
 golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz:
 	mkdir -p golang-ci/cache
@@ -47,6 +48,9 @@ ansible-able-ubuntu: ansible-able-ubuntu/Dockerfile
 
 ansible-able-xenial: ansible-able-xenial/Dockerfile
 	docker build -t cfgarden/ansible-able-xenial --rm ansible-able-xenial
+
+hello: hello/Dockerfile
+	docker build -t cfgarden/hello --rm hello
 
 ROOTFSES_DIR=garden-ci-ubuntu/rootfses
 DEPS_DIR=garden-ci-ubuntu/dependencies
