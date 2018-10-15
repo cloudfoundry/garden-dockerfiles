@@ -13,3 +13,5 @@ ENV PATH=/opt/bin:$PATH
 # Also, you can't concourse-hijack without /bin/bash! Remove this after
 # https://github.com/concourse/concourse/issues/1073 is closed.
 RUN apk add bash
+
+RUN apk add build-base
