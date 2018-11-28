@@ -1,5 +1,5 @@
 all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers fifteen-point-five tutu
-.PHONY: push golang-ci with-volume garden-ci garden-ci-ubuntu large_layers empty zip-bomb ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five tutu
+.PHONY: push golang-ci garden-ci-ng with-volume garden-ci garden-ci-ubuntu large_layers empty zip-bomb ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five tutu
 
 push:
 	docker push cfgarden/with-volume
@@ -21,6 +21,19 @@ golang_ci_deps=golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz
 
 golang-ci: ${golang_ci_deps} golang-ci/Dockerfile
 	docker build -t cfgarden/golang-ci --rm golang-ci
+
+NG_ROOTFS_DIR=garden-ci-ng/rootfs
+NG_ASSETS_DIR=garden-ci-ng/assets
+NG_ASSETS=${NG_ASSETS_DIR}/busybox.tar
+
+${NG_ASSETS_DIR}/busybox.tar:
+	docker build -t cfgarden/busybox --rm ${NG_ROOTFS_DIR}/busybox
+	docker run --name busybox cfgarden/busybox
+	docker export -o ${NG_ASSETS_DIR}/busybox.tar busybox
+	docker rm -f busybox
+
+garden-ci-ng: ${NG_ASSETS} garden-ci-ng/Dockerfile
+	docker build -t cfgarden/garden-ci-ng --rm garden-ci-ng
 
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
