@@ -18,6 +18,7 @@ RUN apt update \
       net-tools \
       pkg-config \
       python \
+      strace \
       sudo \
       uuid-dev \
       wget
@@ -26,6 +27,10 @@ RUN apt update \
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
 COPY assets/busybox.tar /opt/warden/rootfs.tar
 RUN chmod 0644 /opt/warden/rootfs.tar
+COPY assets/docker_registry_v2.tar /opt/warden/docker-registry-v2-rootfs.tar
+RUN chmod 0644 /opt/warden/docker-registry-v2-rootfs.tar
+COPY assets/fuse.tar /opt/warden/fuse-rootfs.tar
+RUN chmod 0644 /opt/warden/fuse-rootfs.tar
 
 # create static assets dir
 RUN mkdir -p /opt/static-assets && chmod 0755 /opt/static-assets
@@ -113,3 +118,6 @@ RUN wget -qO- "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64
 
 # install ginkgo
 RUN go get github.com/onsi/ginkgo/ginkgo
+
+# add rootless user
+# RUN groupadd -g 5000 rootless && useradd -u 5000 -g 5000 rootless

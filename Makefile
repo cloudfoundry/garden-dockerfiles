@@ -24,13 +24,32 @@ golang-ci: ${golang_ci_deps} golang-ci/Dockerfile
 
 NG_ROOTFS_DIR=garden-ci-ng/rootfs
 NG_ASSETS_DIR=garden-ci-ng/assets
-NG_ASSETS=${NG_ASSETS_DIR}/busybox.tar
+NG_ASSETS=${NG_ASSETS_DIR}/busybox.tar ${NG_ASSETS_DIR}/docker_registry_v2.tar ${NG_ASSETS_DIR}/fuse.tar
 
 ${NG_ASSETS_DIR}/busybox.tar:
 	docker build -t cfgarden/busybox --rm ${NG_ROOTFS_DIR}/busybox
 	docker run --name busybox cfgarden/busybox
 	docker export -o ${NG_ASSETS_DIR}/busybox.tar busybox
 	docker rm -f busybox
+
+${NG_ASSETS_DIR}/fuse.tar: ${NG_ROOTFS_DIR}/fuse/Dockerfile
+	docker build -t cfgarden/fuse --rm ${NG_ROOTFS_DIR}/fuse
+	docker run --name fuse cfgarden/fuse
+	docker export -o ${NG_ASSETS_DIR}/fuse.tar fuse
+	docker rm -f fuse
+
+${NG_ASSETS_DIR}/docker_registry_v2.tar:
+	# spin up a local docker registry
+	docker run -d -p "5000:5000" -e "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/opt/docker-registry" --name docker_registry_v2 registry:2.6.2
+
+	# push busybox to our local registry
+	docker pull busybox
+	docker tag busybox localhost:5000/busybox
+	docker push localhost:5000/busybox
+
+	# export registry iamge as a tar
+	docker export -o ${NG_ASSETS_DIR}/docker_registry_v2.tar docker_registry_v2
+	docker rm -f docker_registry_v2
 
 garden-ci-ng: ${NG_ASSETS} garden-ci-ng/Dockerfile
 	docker build -t cfgarden/garden-ci-ng --rm garden-ci-ng
