@@ -65,3 +65,6 @@ wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd6
 unzip tf.zip
 mv terraform /usr/local/bin/
 chmod +rx /usr/local/bin/terraform
+
+wget https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -O /usr/local/bin/dep
+chmod +x /usr/local/bin/dep
