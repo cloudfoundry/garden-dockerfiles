@@ -21,7 +21,8 @@ RUN apt update \
       strace \
       sudo \
       uuid-dev \
-      wget
+      wget \
+      iputils-ping
 
 # container rootfs
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
