@@ -23,7 +23,8 @@ RUN apt update \
       uuid-dev \
       wget \
       iputils-ping \
-      uidmap
+      uidmap \
+      curl
 
 # container rootfs
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
