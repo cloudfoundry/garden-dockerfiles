@@ -123,4 +123,4 @@ RUN wget -qO- "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64
 RUN go get github.com/onsi/ginkgo/ginkgo
 
 # add rootless user
-# RUN groupadd -g 5000 rootless && useradd -u 5000 -g 5000 rootless
+RUN groupadd -g 5000 rootless && useradd -u 5000 -g 5000 rootless
