@@ -124,3 +124,12 @@ RUN go get github.com/onsi/ginkgo/ginkgo
 
 # add rootless user
 RUN groupadd -g 5000 rootless && useradd -u 5000 -g 5000 rootless
+
+# install bosh-cli
+RUN curl -L -o /usr/local/bin/bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v5.4.0/bosh-cli-5.4.0-linux-amd64
+RUN chmod +rx /usr/local/bin/bosh
+
+# install the CF CLI
+RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.41.0&source=github-rel" | tar -zx cf
+RUN mv cf /usr/local/bin
+RUN chmod 755 /usr/local/bin/cf
