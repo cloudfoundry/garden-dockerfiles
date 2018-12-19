@@ -24,7 +24,11 @@ RUN apt update \
       wget \
       iputils-ping \
       uidmap \
-      curl
+      curl \
+      jq \
+      unzip \
+      ruby-full
+
 
 # container rootfs
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
@@ -119,17 +123,28 @@ ENV GOPATH "${HOME}/go"
 ENV PATH "${GOROOT}/bin:${GOPATH}/bin:${PATH}"
 RUN wget -qO- "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
-# install ginkgo
+# install go packages
 RUN go get github.com/onsi/ginkgo/ginkgo
+RUN go get github.com/fouralarmfire/grootsay
 
-# add rootless user
-RUN groupadd -g 5000 rootless && useradd -u 5000 -g 5000 rootless
+# add some unprivileged user
+RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
 
 # install bosh-cli
-RUN curl -L -o /usr/local/bin/bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v5.4.0/bosh-cli-5.4.0-linux-amd64
-RUN chmod +rx /usr/local/bin/bosh
+RUN curl -L -o /usr/local/bin/bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v5.4.0/bosh-cli-5.4.0-linux-amd64 \
+    && chmod +rx /usr/local/bin/bosh
 
 # install the CF CLI
-RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.41.0&source=github-rel" | tar -zx cf
-RUN mv cf /usr/local/bin
-RUN chmod 755 /usr/local/bin/cf
+RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.41.0&source=github-rel" | tar -zx cf \
+    && mv cf /usr/local/bin \
+    && chmod 755 /usr/local/bin/cf
+
+# install dep
+RUN wget https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -O /usr/local/bin/dep \
+    && chmod +x /usr/local/bin/dep
+
+# install terraform
+RUN wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip -O tf.zip \
+    && unzip tf.zip \
+    && mv terraform /usr/local/bin/ \
+    && chmod +rx /usr/local/bin/terraform \
