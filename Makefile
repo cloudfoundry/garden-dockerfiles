@@ -1,44 +1,31 @@
-all: golang-ci with-volume garden-ci garden-ci-ubuntu large_layers fifteen-point-five tutu
-.PHONY: push golang-ci garden-ci-ng with-volume garden-ci garden-ci-ubuntu large_layers empty zip-bomb ansible-able-ubuntu ansible-able-xenial dev-vm fifteen-point-five tutu
+all: with-volume garden-ci tutu
+.PHONY: push garden-ci with-volume empty zip-bomb dev-vm fifteen-point-five tutu
 
 push:
 	docker push cfgarden/with-volume
 	docker push cfgarden/garden-ci
-	docker push cfgarden/garden-ci-ubuntu
-	docker push cfgarden/golang-ci
-	docker push cfgarden/large_layers
 	docker push cfgarden/empty
 	docker push cfgarden/zip-bomb
 	docker push cfgarden/tutu
 	docker push cfgarden/hello
 
-golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz:
-	mkdir -p golang-ci/cache
-	cd golang-ci/cache && \
-		wget https://s3-us-west-1.amazonaws.com/cf-cli-releases/releases/v6.33.1/cf-cli_6.33.1_linux_x86-64.tgz
+ROOTFS_DIR=garden-ci/rootfs
+ASSETS_DIR=garden-ci/assets
+ASSETS=${ASSETS_DIR}/busybox.tar ${ASSETS_DIR}/docker_registry_v2.tar ${ASSETS_DIR}/fuse.tar
 
-golang_ci_deps=golang-ci/cache/cf-cli_6.33.1_linux_x86-64.tgz
-
-golang-ci: ${golang_ci_deps} golang-ci/Dockerfile
-	docker build -t cfgarden/golang-ci --rm golang-ci
-
-NG_ROOTFS_DIR=garden-ci-ng/rootfs
-NG_ASSETS_DIR=garden-ci-ng/assets
-NG_ASSETS=${NG_ASSETS_DIR}/busybox.tar ${NG_ASSETS_DIR}/docker_registry_v2.tar ${NG_ASSETS_DIR}/fuse.tar
-
-${NG_ASSETS_DIR}/busybox.tar:
-	docker build -t cfgarden/busybox --rm ${NG_ROOTFS_DIR}/busybox
+${ASSETS_DIR}/busybox.tar:
+	docker build -t cfgarden/busybox --rm ${ROOTFS_DIR}/busybox
 	docker run --name busybox cfgarden/busybox
-	docker export -o ${NG_ASSETS_DIR}/busybox.tar busybox
+	docker export -o ${ASSETS_DIR}/busybox.tar busybox
 	docker rm -f busybox
 
-${NG_ASSETS_DIR}/fuse.tar: ${NG_ROOTFS_DIR}/fuse/Dockerfile
-	docker build -t cfgarden/fuse --rm ${NG_ROOTFS_DIR}/fuse
+${ASSETS_DIR}/fuse.tar: ${ROOTFS_DIR}/fuse/Dockerfile
+	docker build -t cfgarden/fuse --rm ${ROOTFS_DIR}/fuse
 	docker run --name fuse cfgarden/fuse
-	docker export -o ${NG_ASSETS_DIR}/fuse.tar fuse
+	docker export -o ${ASSETS_DIR}/fuse.tar fuse
 	docker rm -f fuse
 
-${NG_ASSETS_DIR}/docker_registry_v2.tar:
+${ASSETS_DIR}/docker_registry_v2.tar:
 	# spin up a local docker registry
 	docker run -d -p "5000:5000" -e "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/opt/docker-registry" --name docker_registry_v2 registry:2.6.2
 
@@ -48,11 +35,11 @@ ${NG_ASSETS_DIR}/docker_registry_v2.tar:
 	docker push localhost:5000/busybox
 
 	# export registry iamge as a tar
-	docker export -o ${NG_ASSETS_DIR}/docker_registry_v2.tar docker_registry_v2
+	docker export -o ${ASSETS_DIR}/docker_registry_v2.tar docker_registry_v2
 	docker rm -f docker_registry_v2
 
-garden-ci-ng: ${NG_ASSETS} garden-ci-ng/Dockerfile
-	docker build -t cfgarden/garden-ci-ng --rm garden-ci-ng
+garden-ci: ${ASSETS} garden-ci/Dockerfile
+	docker build -t cfgarden/garden-ci --rm garden-ci
 
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
@@ -60,79 +47,11 @@ with-volume: with-volume/Dockerfile
 with-process-env: with-process-env/Dockerfile
 	docker build -t cfgarden/with-process-env --rm with-process-env
 
-garden-ci: garden-ci/Dockerfile
-	docker build -t cfgarden/garden-ci --rm garden-ci
-
-large_layers: large_layers/Dockerfile
-	docker build -t cfgarden/large_layers --rm large_layers
-
-fifteen-point-five:
-	docker build -t cfgarden/fifteen-point-five --rm fifteen-point-five
-
 tutu:
 	docker build -t cfgarden/tutu --rm tutu
 
 iamthebomb:
 	docker build -t cfgarden/iamthebomb --rm zip-bomb
 
-ansible-able-ubuntu: ansible-able-ubuntu/Dockerfile
-	docker build -t cfgarden/ansible-able-ubuntu --rm ansible-able-ubuntu
-
-ansible-able-xenial: ansible-able-xenial/Dockerfile
-	docker build -t cfgarden/ansible-able-xenial --rm ansible-able-xenial
-
 hello: hello/Dockerfile
 	docker build -t cfgarden/hello --rm hello
-
-ROOTFSES_DIR=garden-ci-ubuntu/rootfses
-DEPS_DIR=garden-ci-ubuntu/dependencies
-DEPENDENCIES=${DEPS_DIR}/busybox.tar \
-						 ${DEPS_DIR}/ubuntu.tar \
-						 ${DEPS_DIR}/docker_registry.tar \
-						 ${DEPS_DIR}/docker_registry_v2.tar \
-						 ${DEPS_DIR}/fuse.tar \
-						 ${DEPS_DIR}/preexisting_users.tar
-
-${DEPS_DIR}/busybox.tar: ${ROOTFSES_DIR}/busybox/Dockerfile
-	docker build -t cfgarden/busybox --rm ${ROOTFSES_DIR}/busybox
-	docker run --name busybox cfgarden/busybox
-	docker export -o ${DEPS_DIR}/busybox.tar busybox
-	docker rm -f busybox
-
-${DEPS_DIR}/docker_registry.tar:
-	docker run -d --name docker_registry registry
-	docker export -o ${DEPS_DIR}/docker_registry.tar docker_registry
-	docker rm -f docker_registry
-
-${DEPS_DIR}/docker_registry_v2.tar:
-	docker run -d -p "5000:5000" -e "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/opt/docker-registry" --name docker_registry_v2 registry:2.6.2
-	./garden-ci-ubuntu/scripts/provision_registry_v2.sh
-	docker export -o ${DEPS_DIR}/docker_registry_v2.tar docker_registry_v2
-	docker rm -f docker_registry_v2
-
-${DEPS_DIR}/fuse.tar: ${ROOTFSES_DIR}/fuse/Dockerfile
-	docker build -t cfgarden/fuse --rm ${ROOTFSES_DIR}/fuse
-	docker run --name fuse cfgarden/fuse
-	docker export -o ${DEPS_DIR}/fuse.tar fuse
-	docker rm -f fuse
-
-${DEPS_DIR}/ubuntu.tar: ${ROOTFSES_DIR}/ubuntu/Dockerfile
-	docker build -t cfgarden/ubuntu --rm ${ROOTFSES_DIR}/ubuntu
-	docker run --name ubuntu cfgarden/ubuntu
-	docker export -o ${DEPS_DIR}/ubuntu.tar ubuntu
-	docker rm -f ubuntu
-
-${DEPS_DIR}/preexisting_users.tar: ${ROOTFSES_DIR}/preexisting_users/Dockerfile
-	docker build -t cfgarden/preexisting_users --rm ${ROOTFSES_DIR}/preexisting_users
-	docker run -d --name preexisting_users cfgarden/preexisting_users
-	docker export -o ${DEPS_DIR}/preexisting_users.tar preexisting_users
-	docker rm -f preexisting_users
-
-garden-ci-ubuntu: ${DEPENDENCIES} ansible-able-ubuntu garden-ci-ubuntu/build-docker-image.sh
-	garden-ci-ubuntu/build-docker-image.sh
-
-garden-ci-xenial: ${DEPENDENCIES} ansible-able-xenial garden-ci-ubuntu/build-docker-image.sh
-	garden-ci-ubuntu/build-docker-image.sh xenial
-
-dev-vm: ${DEPENDENCIES} garden-ci-ubuntu/Vagrantfile
-	garden-ci-ubuntu/build-dev-vm.sh
