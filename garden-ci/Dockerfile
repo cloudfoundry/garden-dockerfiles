@@ -105,9 +105,6 @@ RUN cd "apparmor-${APPARMOR_VERSION}/libraries/libapparmor" \
     && sh ./configure --prefix=/usr \
     && make \
     && make install
-RUN cd "apparmor-${APPARMOR_VERSION}/binutils" \
-    && make \
-    && make install
 RUN cd "apparmor-${APPARMOR_VERSION}/utils" \
     && make \
     && make install
