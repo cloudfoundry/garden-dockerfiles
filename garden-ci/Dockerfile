@@ -11,7 +11,6 @@ RUN apt update \
       gettext \
       git \
       iptables \
-      libseccomp-dev \
       libtool \
       lsof \
       netcat \
@@ -92,7 +91,7 @@ RUN rm -rf "tar-${TAR_VERSION}"
 ENV SECCOMP_VERSION 2.3.3
 RUN wget -qO- "https://github.com/seccomp/libseccomp/releases/download/v${SECCOMP_VERSION}/libseccomp-${SECCOMP_VERSION}.tar.gz" | tar zxf -
 RUN cd "libseccomp-${SECCOMP_VERSION}" \
-    && ./configure --prefix=/opt/static-assets/libseccomp \
+    && ./configure \
     && make \
     && make install
 RUN rm -rf "libseccomp-${SECCOMP_VERSION}"
