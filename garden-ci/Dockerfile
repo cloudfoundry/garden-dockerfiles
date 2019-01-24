@@ -113,7 +113,7 @@ RUN cd "apparmor-${APPARMOR_VERSION}/parser" \
 RUN rm -rf "apparmor-${APPARMOR_VERSION}"
 
 # install golang
-ENV GO_VERSION 1.11.4
+ENV GO_VERSION 1.11.5
 ENV GOROOT /usr/local/go
 ENV GOPATH "${HOME}/go"
 ENV PATH "${GOROOT}/bin:${GOPATH}/bin:${PATH}"
