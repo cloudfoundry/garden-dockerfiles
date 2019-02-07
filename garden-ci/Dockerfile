@@ -97,8 +97,8 @@ RUN cd "libseccomp-${SECCOMP_VERSION}" \
 RUN rm -rf "libseccomp-${SECCOMP_VERSION}"
 
 # install apparmor
-ENV APPARMOR_VERSION 2.11.1
-RUN wget -qO- "https://launchpad.net/apparmor/2.11/${APPARMOR_VERSION}/+download/apparmor-${APPARMOR_VERSION}.tar.gz" | tar zxf -
+ENV APPARMOR_VERSION 2.13.2
+RUN wget -qO- "https://launchpad.net/apparmor/2.13/${APPARMOR_VERSION}/+download/apparmor-${APPARMOR_VERSION}.tar.gz" | tar zxf -
 RUN cd "apparmor-${APPARMOR_VERSION}/libraries/libapparmor" \
     && sh ./autogen.sh \
     && sh ./configure --prefix=/usr \
