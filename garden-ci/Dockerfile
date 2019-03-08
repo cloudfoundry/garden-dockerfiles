@@ -32,96 +32,98 @@ RUN apt update \
 # container rootfs
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
 COPY assets/busybox.tar /opt/warden/rootfs.tar
-RUN chmod 0644 /opt/warden/rootfs.tar
 COPY assets/docker_registry_v2.tar /opt/warden/docker-registry-v2-rootfs.tar
-RUN chmod 0644 /opt/warden/docker-registry-v2-rootfs.tar
 COPY assets/fuse.tar /opt/warden/fuse-rootfs.tar
-RUN chmod 0644 /opt/warden/fuse-rootfs.tar
+RUN chmod 0644 /opt/warden/rootfs.tar /opt/warden/docker-registry-v2-rootfs.tar /opt/warden/fuse-rootfs.tar
 
 # create static assets dir
 RUN mkdir -p /opt/static-assets && chmod 0755 /opt/static-assets
 
 # install xfsprogs
-ENV XFSPROGS_VERSION 4.3.0
-RUN wget -qO- "http://ftp.ntu.edu.tw/linux/utils/fs/xfs/xfsprogs/xfsprogs-${XFSPROGS_VERSION}.tar.gz" | tar zxf -
-RUN cd "xfsprogs-${XFSPROGS_VERSION}" \
+RUN version=4.3.0 \
+    && wget -qO- "http://ftp.ntu.edu.tw/linux/utils/fs/xfs/xfsprogs/xfsprogs-${version}.tar.gz" | tar zxf - \
+    && cd "xfsprogs-${version}" \
     && ./configure \
     && make \
-    && make install
-RUN rm -rf "xfsprogs-${XFSPROGS_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "xfsprogs-${version}"
 
 # install libmnl (required by iptables)
-ENV LIBMNL_VERSION 1.0.4
-RUN wget -qO- "https://www.netfilter.org/projects/libmnl/files/libmnl-${LIBMNL_VERSION}.tar.bz2" | tar jxf -
-RUN cd "libmnl-${LIBMNL_VERSION}" \
+RUN version=1.0.4 \
+    && wget -qO- "https://www.netfilter.org/projects/libmnl/files/libmnl-${version}.tar.bz2" | tar jxf - \
+    && cd "libmnl-${version}" \
     && ./configure \
     && make \
-    && make install
-RUN rm -rf "libmnl-${LIBMNL_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "libmnl-${version}"
 
 # install libnftnl (requried by iptables)
-ENV LIBNFTNL_VERSION 1.0.9
-RUN wget -qO- "https://www.netfilter.org/projects/libnftnl/files/libnftnl-${LIBNFTNL_VERSION}.tar.bz2" | tar jxf -
-RUN cd "libnftnl-${LIBNFTNL_VERSION}" \
+RUN version=1.0.9 \
+    && wget -qO- "https://www.netfilter.org/projects/libnftnl/files/libnftnl-${version}.tar.bz2" | tar jxf - \
+    && cd "libnftnl-${version}" \
     && ./configure \
     && make \
-    && make install
-RUN rm -rf "libnftnl-${LIBNFTNL_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "libnftnl-${version}"
 
 # install iptables
-ENV IPTABLES_VERSION 1.6.2
-RUN wget -qO- "https://netfilter.org/projects/iptables/files/iptables-${IPTABLES_VERSION}.tar.bz2" | tar jxf -
-RUN cd "iptables-${IPTABLES_VERSION}" \
+RUN version=1.6.2 \
+    && wget -qO- "https://netfilter.org/projects/iptables/files/iptables-${version}.tar.bz2" | tar jxf - \
+    && cd "iptables-${version}" \
     && mkdir /opt/static-assets/iptables \
     && ./configure --prefix=/opt/static-assets/iptables --enable-static --disable-shared \
     && make \
-    && make install
-RUN rm -rf "iptables-${IPTABLES_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "iptables-${version}"
 
 # install tar
-ENV TAR_VERSION "1.30"
-RUN wget -qO- "https://ftp.gnu.org/gnu/tar/tar-${TAR_VERSION}.tar.xz" | tar xJf -
-RUN cd "tar-${TAR_VERSION}" \
+RUN version="1.30" \
+    && wget -qO- "https://ftp.gnu.org/gnu/tar/tar-${version}.tar.xz" | tar xJf - \
+    && cd "tar-${version}" \
     && FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/opt/static-assets/tar \
     && make LDFLAGS=-static \
-    && make install
-RUN rm -rf "tar-${TAR_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "tar-${version}"
 
 # install seccomp
-ENV SECCOMP_VERSION 2.3.3
-RUN wget -qO- "https://github.com/seccomp/libseccomp/releases/download/v${SECCOMP_VERSION}/libseccomp-${SECCOMP_VERSION}.tar.gz" | tar zxf -
-RUN cd "libseccomp-${SECCOMP_VERSION}" \
+RUN version=2.3.3 \
+    && wget -qO- "https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz" | tar zxf - \
+    && cd "libseccomp-${version}" \
     && ./configure \
     && make \
-    && make install
-RUN rm -rf "libseccomp-${SECCOMP_VERSION}"
+    && make install \
+    && cd .. \
+    && rm -rf "libseccomp-${version}"
 
 # install apparmor
-ENV APPARMOR_VERSION 2.13.2
-RUN wget -qO- "https://launchpad.net/apparmor/2.13/${APPARMOR_VERSION}/+download/apparmor-${APPARMOR_VERSION}.tar.gz" | tar zxf -
-RUN cd "apparmor-${APPARMOR_VERSION}/libraries/libapparmor" \
+RUN version=2.13.2 \
+    && wget -qO- "https://launchpad.net/apparmor/2.13/${version}/+download/apparmor-${version}.tar.gz" | tar zxf - \
+    && cd "apparmor-${version}/libraries/libapparmor" \
     && sh ./autogen.sh \
     && sh ./configure --prefix=/usr \
     && make \
-    && make install
-RUN cd "apparmor-${APPARMOR_VERSION}/utils" \
+    && make install \
+    && cd "../../utils" \
     && make \
-    && make install
-RUN cd "apparmor-${APPARMOR_VERSION}/parser" \
+    && make install \
+    && cd "../parser" \
     && make \
-    && make install
-RUN rm -rf "apparmor-${APPARMOR_VERSION}"
+    && make install \
+    && cd ../.. \
+    && rm -rf "apparmor-${version}"
 
 # install golang
-ENV GO_VERSION 1.12
-ENV GOROOT /usr/local/go
-ENV GOPATH "${HOME}/go"
-ENV PATH "${GOROOT}/bin:${GOPATH}/bin:${PATH}"
-RUN wget -qO- "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
+ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
+RUN wget -qO- "https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
 # install go packages
-RUN go get github.com/onsi/ginkgo/ginkgo
-RUN go get github.com/fouralarmfire/grootsay
+RUN go get github.com/onsi/ginkgo/ginkgo \
+    && go get github.com/fouralarmfire/grootsay
 
 # add some unprivileged user
 RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
