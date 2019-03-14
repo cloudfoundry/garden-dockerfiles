@@ -115,7 +115,12 @@ RUN version=2.13.2 \
     && make \
     && make install \
     && cd ../.. \
+    && cp -R "apparmor-${version}/profiles/apparmor.d/tunables" "/etc/apparmor.d/tunables" \
+    && cp -R "apparmor-${version}/profiles/apparmor.d/abstractions" "/etc/apparmor.d/abstractions" \
     && rm -rf "apparmor-${version}"
+
+# copy apparmor profile
+COPY assets/garden-default /opt/static-assets/
 
 # install golang
 ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
