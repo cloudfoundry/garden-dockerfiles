@@ -120,7 +120,7 @@ RUN version=2.13.2 \
     && rm -rf "apparmor-${version}"
 
 # copy apparmor profile
-COPY assets/garden-default /opt/static-assets/
+COPY apparmor/garden-default /opt/static-assets/
 
 # install golang
 ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
