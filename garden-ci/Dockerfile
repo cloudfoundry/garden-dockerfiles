@@ -13,7 +13,7 @@ RUN apt update \
       iptables \
       libtool \
       lsof \
-      netcat \
+      netcat-openbsd \
       net-tools \
       pkg-config \
       python \
