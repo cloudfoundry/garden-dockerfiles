@@ -142,10 +142,6 @@ RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version
     && mv cf /usr/local/bin \
     && chmod 755 /usr/local/bin/cf
 
-# install dep
-RUN wget https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -O /usr/local/bin/dep \
-    && chmod +x /usr/local/bin/dep
-
 # install terraform
 RUN wget https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip -O tf.zip \
     && unzip tf.zip \
