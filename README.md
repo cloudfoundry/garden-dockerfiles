@@ -2,38 +2,27 @@
 
 Images CF Garden team consumes in testing environments.
 
-* `garden-ci`: Used in the publish pipeline.
-* `garden-ci-ubuntu`: Used in most nested tests.
-* `golang-ci`: Used in non-nested tests.
+* `garden-ci`: Used by almost all jobs in CI.
 * `large_layers`: An image with large layers.
 * `ubuntu-bc`: Ubuntu image with `bc` program.
 * `with-user-with-group`: Image with a user that has supplementary groups.
 * `with-volume`: Image that uses defines a Docker volume.
 
-## Building garden-ci-ubuntu
-
-1) Use the provided makefile:
+## Building garden-ci
 
 ```
-make garden-ci-ubuntu
+make garden-ci
 ```
 
-2) Tag the image with the correct version:
+## Producing a new image
+
+Tag the image with the correct version:
 
 ```
-docker tag cfgarden/garden-ci-ubuntu cfgarden/garden-ci-ubuntu:x.y.z
+docker tag cfgarden/garden-ci:latest cfgarden/garden-ci:x.y.z
+docker push cfgarden/garden-ci:x.y.z
+docker push cfgarden/garden-ci:latest
 ```
 
-3) Login to Dockerhub
+We use semantic versioning for version numbers.
 
-```
-docker login
-# It will prompt for the Dockerhub credentials that can be found in LastPass
-```
-
-4) Push
-
-```
-docker push cfgarden/garden-ci-ubuntu:x.y.z
-docker push cfgarden/garden-ci-ubuntu:latest
-```
