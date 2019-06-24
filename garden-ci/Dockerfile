@@ -26,6 +26,7 @@ RUN apt update \
       curl \
       jq \
       unzip \
+      sysstat \
       ruby-full
 
 
