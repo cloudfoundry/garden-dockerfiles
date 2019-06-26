@@ -32,7 +32,12 @@ RUN apt update \
 
 # container rootfs
 RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
-COPY assets/busybox.tar /opt/warden/rootfs.tar
+RUN mkdir -p /tmp/busybox
+COPY assets/busybox.tar /tmp
+RUN tar xf /tmp/busybox.tar -C /tmp/busybox
+COPY assets/usemem /tmp/busybox/bin
+RUN tar cf /opt/warden/rootfs.tar -C /tmp/busybox .
+RUN rm -rf /tmp/busybox
 COPY assets/docker_registry_v2.tar /opt/warden/docker-registry-v2-rootfs.tar
 COPY assets/fuse.tar /opt/warden/fuse-rootfs.tar
 RUN chmod 0644 /opt/warden/rootfs.tar /opt/warden/docker-registry-v2-rootfs.tar /opt/warden/fuse-rootfs.tar
