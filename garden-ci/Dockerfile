@@ -35,7 +35,7 @@ RUN mkdir -p /opt/warden && chmod 0755 /opt/warden
 RUN mkdir -p /tmp/busybox
 COPY assets/busybox.tar /tmp
 RUN tar xf /tmp/busybox.tar -C /tmp/busybox
-COPY assets/usemem /tmp/busybox/bin
+COPY usemem/usemem /tmp/busybox/bin
 RUN tar cf /opt/warden/rootfs.tar -C /tmp/busybox .
 RUN rm -rf /tmp/busybox
 COPY assets/docker_registry_v2.tar /opt/warden/docker-registry-v2-rootfs.tar
