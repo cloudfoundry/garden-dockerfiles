@@ -97,7 +97,7 @@ RUN version="1.30" \
     && rm -rf "tar-${version}"
 
 # install seccomp
-RUN version=2.3.3 \
+RUN version=2.4.1 \
     && wget -qO- "https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz" | tar zxf - \
     && cd "libseccomp-${version}" \
     && ./configure \
