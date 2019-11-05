@@ -130,7 +130,7 @@ COPY apparmor/garden-default /opt/static-assets/
 
 # install golang
 ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
-RUN wget -qO- "https://storage.googleapis.com/golang/go1.13.1.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
+RUN wget -qO- "https://storage.googleapis.com/golang/go1.13.4.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
 # install go packages
 RUN go get github.com/onsi/ginkgo/ginkgo \
