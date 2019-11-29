@@ -177,13 +177,6 @@ func (s *spinner) Average() float64 {
 	return float64(total) / float64(count)
 }
 
-func (s *spinner) PrintHistory() {
-	s.history.Do(func(p interface{}) {
-		fmt.Printf("%d ", p.(int))
-	})
-	fmt.Println()
-}
-
 func (s *spinner) countIterations(period time.Duration) int {
 	numGoRoutines := runtime.NumCPU()
 	resultChan := make(chan int, numGoRoutines)
