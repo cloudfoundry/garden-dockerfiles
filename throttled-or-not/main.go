@@ -109,19 +109,29 @@ func cpuCgroupHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, line := range strings.Split(string(contents), "\n") {
-		if strings.Contains(line, "cpu") {
-			lineParts := strings.Split(line, ":")
-			if len(lineParts) < 3 {
-				http.Error(w, "can't parse cpu cgroup path", http.StatusInternalServerError)
-				return
-			}
+		lineParts := strings.Split(line, ":")
+		if len(lineParts) < 3 {
+			http.Error(w, "can't parse cpu cgroup path", http.StatusInternalServerError)
+			return
+		}
 
+		controllers := strings.Split(lineParts[1], ",")
+		if contains(controllers, "cpu") {
 			fmt.Fprint(w, lineParts[2])
 			return
 		}
 	}
 
 	http.Error(w, "No CPU cgroup found", http.StatusInternalServerError)
+}
+
+func contains(haystack []string, needle string) bool {
+	for _, s := range haystack {
+		if s == needle {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *spinner) Spin() error {
