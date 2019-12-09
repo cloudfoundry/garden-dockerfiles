@@ -46,6 +46,7 @@ func main() {
 	http.HandleFunc("/minavg", minavgHandler)
 	http.HandleFunc("/maxavg", maxavgHandler)
 	http.HandleFunc("/cpucgroup", cpuCgroupHandler)
+	http.HandleFunc("/ping", pingHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		panic(err)
 	}
@@ -93,6 +94,10 @@ func minavgHandler(w http.ResponseWriter, r *http.Request) {
 
 func maxavgHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%f", theSpinner.maxAverage)
+}
+
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "pong")
 }
 
 func cpuCgroupHandler(w http.ResponseWriter, r *http.Request) {
