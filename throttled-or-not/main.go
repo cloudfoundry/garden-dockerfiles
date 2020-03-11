@@ -8,9 +8,12 @@ import (
 	"math"
 	"net/http"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -22,6 +25,8 @@ var (
 //
 // Use the /spin endpoint to start consuming CPU, and the /unspin endpoint to
 // stop spinning.
+//
+// Use /shortspin/<secs> to spin for number of seconds, then unspin.
 //
 // While spinning, the app calculates fibonacci numbers inefficiently and
 // reports how many numbers it managed to calculate in 100ms.  These counts are
@@ -40,14 +45,16 @@ var (
 func main() {
 	theSpinner = NewSpinner()
 
-	http.HandleFunc("/spin", spinHandler)
-	http.HandleFunc("/unspin", unspinHandler)
-	http.HandleFunc("/lastavg", lastavgHandler)
-	http.HandleFunc("/minavg", minavgHandler)
-	http.HandleFunc("/maxavg", maxavgHandler)
-	http.HandleFunc("/cpucgroup", cpuCgroupHandler)
-	http.HandleFunc("/ping", pingHandler)
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	r := mux.NewRouter()
+	r.HandleFunc("/spin", spinHandler)
+	r.HandleFunc("/unspin", unspinHandler)
+	r.HandleFunc("/shortspin/{duration}", shortspinHandler)
+	r.HandleFunc("/lastavg", lastavgHandler)
+	r.HandleFunc("/minavg", minavgHandler)
+	r.HandleFunc("/maxavg", maxavgHandler)
+	r.HandleFunc("/cpucgroup", cpuCgroupHandler)
+	r.HandleFunc("/ping", pingHandler)
+	if err := http.ListenAndServe(":8080", r); err != nil {
 		panic(err)
 	}
 }
@@ -84,6 +91,19 @@ func unspinHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func shortspinHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	duration, err := strconv.Atoi(vars["duration"])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := theSpinner.Shortspin(duration); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
 func lastavgHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%f", theSpinner.lastAverage)
 }
@@ -144,6 +164,21 @@ func (s *spinner) Spin() error {
 	go s.spin()
 	s.isSpinning = true
 
+	return nil
+}
+
+func (s *spinner) Shortspin(duration int) error {
+	s.spinMutex.Lock()
+	defer s.spinMutex.Unlock()
+
+	if s.isSpinning {
+		return errors.New("already spinning")
+	}
+	go s.spin()
+	s.isSpinning = true
+	time.AfterFunc(time.Duration(duration)*time.Second, func() {
+		s.Unspin()
+	})
 	return nil
 }
 
