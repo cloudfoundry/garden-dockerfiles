@@ -1,8 +1,11 @@
-FROM golang
+FROM golang as builder
 
 WORKDIR /go/src/app
 COPY . .
 
-RUN go build -mod vendor /go/src/app/main.go
+RUN CGO_ENABLED=0 go build -mod vendor /go/src/app/main.go
 
-CMD [ "/go/src/app/main" ]
+FROM busybox
+
+COPY --from=builder /go/src/app/main /go/src/app/main
+CMD [ "/main" ]
