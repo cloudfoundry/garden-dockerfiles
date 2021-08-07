@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3
 
 RUN mkdir -p /test/foo && \
    touch /test/foo/1 /test/foo/2 && \
