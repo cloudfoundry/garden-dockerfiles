@@ -28,6 +28,7 @@ RUN apt update \
       unzip \
       sysstat \
       ruby-full \
+      ca-certificates \
       psmisc
 
 
