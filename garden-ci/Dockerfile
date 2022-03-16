@@ -153,4 +153,7 @@ RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version
 RUN wget https://releases.hashicorp.com/terraform/0.14.6/terraform_0.14.6_linux_amd64.zip -O tf.zip \
     && unzip tf.zip \
     && mv terraform /usr/local/bin/ \
-    && chmod +rx /usr/local/bin/terraform \
+    && chmod +rx /usr/local/bin/terraform
+
+# install bundler for template-tests
+RUN gem install bundler
