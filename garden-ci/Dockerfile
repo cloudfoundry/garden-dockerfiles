@@ -157,7 +157,7 @@ RUN wget https://releases.hashicorp.com/terraform/0.14.6/terraform_0.14.6_linux_
     && chmod +rx /usr/local/bin/terraform
 
 RUN git clone https://github.com/rbenv/rbenv.git /rbenv
-ENV PATH "rbenv/bin:$PATH"
+ENV PATH "/rbenv/bin:$PATH"
 RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
 RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
