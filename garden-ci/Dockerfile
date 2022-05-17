@@ -27,8 +27,9 @@ RUN apt update \
       jq \
       unzip \
       sysstat \
-      ruby-full \
       ca-certificates \
+      libssl-dev \
+      zlib1g-dev \
       psmisc
 
 
@@ -135,8 +136,7 @@ ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/
 RUN rm -rf /usr/local/go && wget -qO- "https://storage.googleapis.com/golang/go1.17.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
 # install go packages
-RUN go get github.com/onsi/ginkgo/ginkgo \
-    && go get github.com/fouralarmfire/grootsay
+RUN go get github.com/onsi/ginkgo/ginkgo
 
 # add some unprivileged user
 RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
@@ -154,4 +154,14 @@ RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version
 RUN wget https://releases.hashicorp.com/terraform/0.14.6/terraform_0.14.6_linux_amd64.zip -O tf.zip \
     && unzip tf.zip \
     && mv terraform /usr/local/bin/ \
-    && chmod +rx /usr/local/bin/terraform \
+    && chmod +rx /usr/local/bin/terraform
+
+RUN git clone https://github.com/rbenv/rbenv.git /rbenv
+ENV PATH "/rbenv/bin:$PATH"
+RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+ENV PATH "$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+
+# install bundler for template-tests
+RUN rbenv install 3.1.1 && rbenv global 3.1.1 && rbenv rehash && eval "$(rbenv init -)" && gem install bundler
