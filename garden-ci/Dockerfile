@@ -151,7 +151,7 @@ RUN wget -qO - "https://cli.run.pivotal.io/stable?release=linux64-binary&version
     && chmod 755 /usr/local/bin/cf
 
 # install terraform
-RUN wget https://releases.hashicorp.com/terraform/0.14.6/terraform_0.14.6_linux_amd64.zip -O tf.zip \
+RUN wget https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip -O tf.zip \
     && unzip tf.zip \
     && mv terraform /usr/local/bin/ \
     && chmod +rx /usr/local/bin/terraform
