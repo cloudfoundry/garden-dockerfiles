@@ -133,10 +133,10 @@ COPY apparmor/garden-default /opt/static-assets/
 
 # install golang
 ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
-RUN rm -rf /usr/local/go && wget -qO- "https://storage.googleapis.com/golang/go1.17.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
+RUN rm -rf /usr/local/go && wget -qO- "https://storage.googleapis.com/golang/go1.18.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
 # install go packages
-RUN go get github.com/onsi/ginkgo/ginkgo
+RUN go install github.com/onsi/ginkgo/ginkgo@latest
 
 # add some unprivileged user
 RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
