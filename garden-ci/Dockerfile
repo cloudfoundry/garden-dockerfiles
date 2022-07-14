@@ -1,5 +1,7 @@
 FROM ubuntu:xenial
 
+ENV GO_VERSION=1.18.4
+
 RUN apt update \
     && apt upgrade --yes \
     && apt install --yes \
@@ -133,7 +135,7 @@ COPY apparmor/garden-default /opt/static-assets/
 
 # install golang
 ENV GOROOT=/usr/local/go GOPATH="${HOME}/go" PATH="/usr/local/go/bin:${HOME}/go/bin:${PATH}"
-RUN rm -rf /usr/local/go && wget -qO- "https://storage.googleapis.com/golang/go1.18.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
+RUN rm -rf /usr/local/go && wget -qO- "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -C /usr/local -xzf -
 
 # install go packages
 RUN go install github.com/onsi/ginkgo/ginkgo@latest
