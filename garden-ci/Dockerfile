@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:jammy
 
 ENV GO_VERSION=1.18.4
 
@@ -18,7 +18,7 @@ RUN apt update \
       netcat-openbsd \
       net-tools \
       pkg-config \
-      python \
+      python2 \
       strace \
       sudo \
       uuid-dev \
@@ -31,6 +31,7 @@ RUN apt update \
       sysstat \
       ca-certificates \
       libssl-dev \
+      libinih-dev \
       zlib1g-dev \
       psmisc
 
@@ -51,7 +52,7 @@ RUN chmod 0644 /opt/warden/rootfs.tar /opt/warden/docker-registry-v2-rootfs.tar 
 RUN mkdir -p /opt/static-assets && chmod 0755 /opt/static-assets
 
 # install xfsprogs
-RUN version=4.3.0 \
+RUN version=5.13.0 \
     && wget -qO- "http://ftp.ntu.edu.tw/linux/utils/fs/xfs/xfsprogs/xfsprogs-${version}.tar.gz" | tar zxf - \
     && cd "xfsprogs-${version}" \
     && ./configure \
@@ -126,6 +127,7 @@ RUN version=2.13.2 \
     && make \
     && make install \
     && cd ../.. \
+    && mkdir -p /etc/apparmor.d/ \
     && cp -R "apparmor-${version}/profiles/apparmor.d/tunables" "/etc/apparmor.d/tunables" \
     && cp -R "apparmor-${version}/profiles/apparmor.d/abstractions" "/etc/apparmor.d/abstractions" \
     && rm -rf "apparmor-${version}"
