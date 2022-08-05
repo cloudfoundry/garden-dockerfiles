@@ -13,6 +13,7 @@ RUN apt update \
       gettext \
       git \
       iptables \
+      iproute2 \
       libtool \
       lsof \
       netcat-openbsd \
