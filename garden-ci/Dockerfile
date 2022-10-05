@@ -1,6 +1,6 @@
 FROM ubuntu:jammy
 
-ENV GO_VERSION=1.19.1
+ENV GO_VERSION=1.19.2
 
 RUN apt update \
     && apt upgrade --yes \
