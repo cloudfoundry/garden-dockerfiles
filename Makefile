@@ -14,7 +14,7 @@ ASSETS_DIR=garden-ci/assets
 ASSETS=${ASSETS_DIR}/busybox.tar ${ASSETS_DIR}/docker_registry_v2.tar ${ASSETS_DIR}/fuse.tar
 
 ${ASSETS_DIR}/busybox.tar:
-	docker build -t cfgarden/busybox --rm ${ROOTFS_DIR}/busybox
+	docker build --build-arg BUSYBOX_VERSION=1.31 -t cfgarden/busybox --rm ${ROOTFS_DIR}/busybox
 	docker run --name busybox cfgarden/busybox
 	docker export -o ${ASSETS_DIR}/busybox.tar busybox
 	docker rm -f busybox
