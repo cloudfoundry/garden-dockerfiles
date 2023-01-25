@@ -1,4 +1,4 @@
-FROM busybox:1.35.0
+FROM busybox:1.31
 MAINTAINER https://github.com/cloudfoundry/garden-dockerfiles
 
 ADD seed /etc/seed

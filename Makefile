@@ -1,4 +1,4 @@
-all: with-volume garden-ci tutu
+all: clean with-volume garden-ci tutu
 .PHONY: push garden-ci with-volume empty zip-bomb dev-vm fifteen-point-five tutu
 
 push:
@@ -38,7 +38,9 @@ ${ASSETS_DIR}/docker_registry_v2.tar:
 	docker export -o ${ASSETS_DIR}/docker_registry_v2.tar docker_registry_v2
 	docker rm -f docker_registry_v2
 
-garden-ci: ${ASSETS} garden-ci/Dockerfile
+garden-ci: clean build-garden-ci
+
+build-garden-ci: ${ASSETS} garden-ci/Dockerfile
 	docker build -t cfgarden/garden-ci --rm garden-ci
 
 with-volume: with-volume/Dockerfile
@@ -55,3 +57,6 @@ iamthebomb:
 
 hello: hello/Dockerfile
 	docker build -t cfgarden/hello --rm hello
+
+clean:
+	rm -rf ${ASSETS_DIR}/*.tar
