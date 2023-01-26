@@ -41,7 +41,7 @@ ${ASSETS_DIR}/docker_registry_v2.tar:
 garden-ci: clean build-garden-ci
 
 build-garden-ci: ${ASSETS} garden-ci/Dockerfile
-	docker build -t cfgarden/garden-ci --rm garden-ci
+	docker build --build-arg GO_VERSION=1.19.5 -t cfgarden/garden-ci --rm garden-ci
 
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
