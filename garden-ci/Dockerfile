@@ -1,7 +1,5 @@
 FROM c2cnetworking/tas-runtime-build
 
-ARG GO_VERSION
-
 RUN apt update \
     && apt upgrade --yes \
     && apt install --yes \
