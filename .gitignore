@@ -1,1 +1,3 @@
-garden-ci/assets/*
+garden-ci/rootfs.tar
+garden-ci/docker_registry_v2.tar
+garden-ci/fuse-rootfs.tar

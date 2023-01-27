@@ -9,20 +9,19 @@ push:
 	docker push cfgarden/tutu
 	docker push cfgarden/hello
 
-ROOTFS_DIR=garden-ci/rootfs
-ASSETS_DIR=garden-ci/assets
-ASSETS=${ASSETS_DIR}/busybox.tar ${ASSETS_DIR}/docker_registry_v2.tar ${ASSETS_DIR}/fuse.tar
+ASSETS_DIR=garden-ci
+ASSETS=${ASSETS_DIR}/rootfs.tar ${ASSETS_DIR}/docker_registry_v2.tar ${ASSETS_DIR}/fuse-rootfs.tar
 
-${ASSETS_DIR}/busybox.tar:
-	docker build --build-arg BUSYBOX_VERSION=1.31 -t cfgarden/busybox --rm ${ROOTFS_DIR}/busybox
+${ASSETS_DIR}/rootfs.tar:
+	docker build --build-arg BUSYBOX_VERSION=1.31 -t cfgarden/busybox --rm busybox
 	docker run --name busybox cfgarden/busybox
-	docker export -o ${ASSETS_DIR}/busybox.tar busybox
+	docker export -o ${ASSETS_DIR}/rootfs.tar busybox
 	docker rm -f busybox
 
-${ASSETS_DIR}/fuse.tar: ${ROOTFS_DIR}/fuse/Dockerfile
-	docker build -t cfgarden/fuse --rm ${ROOTFS_DIR}/fuse
+${ASSETS_DIR}/fuse-rootfs.tar: fuse/Dockerfile
+	docker build -t cfgarden/fuse --rm fuse
 	docker run --name fuse cfgarden/fuse
-	docker export -o ${ASSETS_DIR}/fuse.tar fuse
+	docker export -o ${ASSETS_DIR}/fuse-rootfs.tar fuse
 	docker rm -f fuse
 
 ${ASSETS_DIR}/docker_registry_v2.tar:
