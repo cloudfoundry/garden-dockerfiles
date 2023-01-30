@@ -1,8 +1,8 @@
 FROM c2cnetworking/tas-runtime-build
 
-RUN apt update \
-    && apt upgrade --yes \
-    && apt install --yes \
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update -y && apt-get install --assume-yes --no-install-recommends \
       autoconf \
       bison \
       libblkid-dev \
@@ -35,7 +35,8 @@ RUN apt update \
       libseccomp-dev \
       zlib1g-dev \
       xfsprogs \
-      psmisc
+      psmisc \
+      && rm -rf /var/lib/apt/lists/*
 
 
 # container rootfs
