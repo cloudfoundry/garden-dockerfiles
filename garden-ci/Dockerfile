@@ -49,16 +49,6 @@ RUN chmod 0644 /opt/warden/*.tar
 # create static assets dir
 RUN mkdir -p /opt/static-assets && chmod 0755 /opt/static-assets
 
-# install tar
-RUN version="1.30" \
-    && wget -qO- "https://ftp.gnu.org/gnu/tar/tar-${version}.tar.xz" | tar xJf - \
-    && cd "tar-${version}" \
-    && FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/opt/static-assets/tar \
-    && make LDFLAGS=-static \
-    && make install \
-    && cd .. \
-    && rm -rf "tar-${version}"
-
 # copy apparmor profile
 COPY apparmor-garden-default /opt/static-assets/garden-default
 
