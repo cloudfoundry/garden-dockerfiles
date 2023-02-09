@@ -1,4 +1,4 @@
-FROM c2cnetworking/tas-runtime-build
+FROM cloudfoundry/tas-runtime-build
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
