@@ -19,7 +19,7 @@ make garden-runc-release
 Tag the image with the correct version:
 
 ```
-docker tag cloudfoundry/garden-runc-release:latest cloudfoundry/garden-release:x.y.z
+docker tag cloudfoundry/garden-runc-release:latest cloudfoundry/garden-runc-release:x.y.z
 docker push cloudfoundry/garden-runc-release:x.y.z
 docker push cloudfoundry/garden-runc-release:latest
 ```

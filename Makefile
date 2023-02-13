@@ -1,15 +1,15 @@
-all: clean with-volume garden-release tutu
-.PHONY: push garden-release with-volume empty zip-bomb dev-vm fifteen-point-five tutu
+all: clean with-volume garden-runc-release tutu
+.PHONY: push garden-runc-release with-volume empty zip-bomb dev-vm fifteen-point-five tutu
 
 push:
 	docker push cfgarden/with-volume
-	docker push cloudfoundry/garden-release
+	docker push cloudfoundry/garden-runc-release
 	docker push cfgarden/empty
 	docker push cfgarden/zip-bomb
 	docker push cfgarden/tutu
 	docker push cfgarden/hello
 
-ASSETS_DIR=garden-release
+ASSETS_DIR=garden-runc-release
 ASSETS=${ASSETS_DIR}/rootfs.tar ${ASSETS_DIR}/docker_registry_v2.tar ${ASSETS_DIR}/fuse-rootfs.tar
 
 ${ASSETS_DIR}/rootfs.tar:
@@ -37,10 +37,10 @@ ${ASSETS_DIR}/docker_registry_v2.tar:
 	docker export -o ${ASSETS_DIR}/docker_registry_v2.tar docker_registry_v2
 	docker rm -f docker_registry_v2
 
-garden-release: clean build-garden-release
+garden-runc-release: clean build-garden-runc-release
 
-build-garden-release: ${ASSETS} garden-release/Dockerfile
-	docker build --build-arg -t cloudfoundry/garden-release --rm garden-release
+build-garden-runc-release: ${ASSETS} garden-runc-release/Dockerfile
+	docker build --build-arg -t cloudfoundry/garden-runc-release --rm garden-runc-release
 
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
