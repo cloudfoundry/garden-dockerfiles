@@ -19,9 +19,9 @@ make garden-ci
 Tag the image with the correct version:
 
 ```
-docker tag cfgarden/garden-ci:latest cfgarden/garden-ci:x.y.z
-docker push cfgarden/garden-ci:x.y.z
-docker push cfgarden/garden-ci:latest
+docker tag cloudfoundry/garden-ci:latest cloudfoundry/garden-ci:x.y.z
+docker push cloudfoundry/garden-ci:x.y.z
+docker push cloudfoundry/garden-ci:latest
 ```
 
 We use semantic versioning for version numbers.

@@ -3,7 +3,7 @@ all: clean with-volume garden-ci tutu
 
 push:
 	docker push cfgarden/with-volume
-	docker push cfgarden/garden-ci
+	docker push cloudfoundry/garden-ci
 	docker push cfgarden/empty
 	docker push cfgarden/zip-bomb
 	docker push cfgarden/tutu
@@ -18,11 +18,11 @@ ${ASSETS_DIR}/rootfs.tar:
 	docker export -o ${ASSETS_DIR}/rootfs.tar busybox
 	docker rm -f busybox
 
-${ASSETS_DIR}/fuse-rootfs.tar: fuse/Dockerfile
-	docker build -t cfgarden/fuse --rm fuse
-	docker run --name fuse cfgarden/fuse
+${ASSETS_DIR}/fuse-rootfs.tar: garden-fuse/Dockerfile
+	docker build -t cloudfoundry/fuse --rm garden-fuse
+	docker run --name fuse cloudfoundry/garden-fuse
 	docker export -o ${ASSETS_DIR}/fuse-rootfs.tar fuse
-	docker rm -f fuse
+	docker rm -f garden-fuse
 
 ${ASSETS_DIR}/docker_registry_v2.tar:
 	# spin up a local docker registry
@@ -40,7 +40,7 @@ ${ASSETS_DIR}/docker_registry_v2.tar:
 garden-ci: clean build-garden-ci
 
 build-garden-ci: ${ASSETS} garden-ci/Dockerfile
-	docker build --build-arg -t cfgarden/garden-ci --rm garden-ci
+	docker build --build-arg -t cloudfoundry/garden-ci --rm garden-ci
 
 with-volume: with-volume/Dockerfile
 	docker build -t cfgarden/with-volume --rm with-volume
