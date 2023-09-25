@@ -1,4 +1,6 @@
-FROM cloudfoundry/tas-runtime-build
+ARG TAS_RUNTIME_BUILD_URI
+
+FROM ${TAS_RUNTIME_BUILD_URI}
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
