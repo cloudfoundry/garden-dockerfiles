@@ -55,4 +55,4 @@ RUN mkdir -p /opt/static-assets && chmod 0755 /opt/static-assets
 COPY apparmor-garden-default /opt/static-assets/garden-default
 
 # add some unprivileged user
-RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
+#RUN groupadd -g 5000 whoever && useradd -u 5000 -g 5000 whoever
